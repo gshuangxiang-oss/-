@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 车牌检测与识别系统</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- 背景动画 -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🚗</span>
+                <div class="logo-text">
+                    <h1>车牌检测与识别系统</h1>
+                    <p>License Plate Detection & Recognition</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge">Deep Learning</span>
+                <span class="badge">YOLOv8</span>
+                <span class="badge">PaddleOCR</span>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 上传区域 -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="upload-text">
+                        <p class="primary-text">拖拽图片到此处或点击上传</p>
+                        <p class="secondary-text">支持 JPG, PNG, GIF, BMP, WebP 格式 (最大 16MB)</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <button class="upload-btn" id="selectBtn">选择图片</button>
+                </div>
+            </section>
+
+            <!-- 预览和结果区域 -->
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <!-- 图片预览 -->
+                <section class="preview-section">
+                    <div class="section-header">
+                        <h2>📷 图像预览</h2>
+                        <button class="clear-btn" id="clearBtn">清除</button>
+                    </div>
+                    <div class="image-comparison">
+                        <div class="image-card">
+                            <h3>原始图像</h3>
+                            <div class="image-wrapper">
+                                <img id="originalImage" src="" alt="原始图像">
+                            </div>
+                        </div>
+                        <div class="image-card">
+                            <h3>检测结果</h3>
+                            <div class="image-wrapper">
+                                <img id="annotatedImage" src="" alt="检测结果">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 识别结果 -->
+                <section class="results-section">
+                    <div class="section-header">
+                        <h2>🔍 识别结果</h2>
+                        <span class="processing-time" id="processingTime"></span>
+                    </div>
+                    <div class="plates-grid" id="platesGrid">
+                        <!-- 动态生成车牌结果 -->
+                    </div>
+                    <div class="no-result" id="noResult" style="display: none;">
+                        <span class="no-result-icon">🔎</span>
+                        <p>未检测到车牌</p>
+                        <p class="hint">请确保图片中包含清晰可见的车牌</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 加载状态 -->
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>正在识别中...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- 使用说明 -->
+        <section class="instructions">
+            <h2>📖 使用说明</h2>
+            <div class="instruction-cards">
+                <div class="instruction-card">
+                    <span class="step-number">1</span>
+                    <h3>上传图片</h3>
+                    <p>选择包含车牌的车辆图片</p>
+                </div>
+                <div class="instruction-card">
+                    <span class="step-number">2</span>
+                    <h3>智能检测</h3>
+                    <p>AI 自动定位车牌位置</p>
+                </div>
+                <div class="instruction-card">
+                    <span class="step-number">3</span>
+                    <h3>字符识别</h3>
+                    <p>OCR 识别车牌号码</p>
+                </div>
+                <div class="instruction-card">
+                    <span class="step-number">4</span>
+                    <h3>查看结果</h3>
+                    <p>获取完整识别信息</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术栈 -->
+        <section class="tech-stack">
+            <h2>🛠️ 技术栈</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">🤖</div>
+                    <div class="tech-info">
+                        <h4>YOLOv8</h4>
+                        <p>目标检测</p>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📝</div>
+                    <div class="tech-info">
+                        <h4>PaddleOCR</h4>
+                        <p>文字识别</p>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐍</div>
+                    <div class="tech-info">
+                        <h4>Flask</h4>
+                        <p>后端框架</p>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <div class="tech-info">
+                        <h4>Modern CSS</h4>
+                        <p>响应式设计</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>🎓 深度学习课程项目 | 车牌检测与识别系统</p>
+            <p class="copyright">© 2026 All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+
